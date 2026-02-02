@@ -315,72 +315,81 @@
   /* ═══════════════════════════════════════
      MOBILE
      ═══════════════════════════════════════ */
+  .hero-mobile-btn { display: none; }
+
   @media (max-width: 1100px) {
     .hero-text-left { left: 3vw; max-width: 300px; }
     .hero-text-right { right: 3vw; max-width: 300px; }
   }
 
   @media (max-width: 768px) {
+    /* Hero: full-screen photo with text overlay at bottom */
     .hero {
-      height: auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 600px;
+      position: relative;
+      display: block;
     }
 
     .hero-bg {
-      position: relative;
+      position: absolute;
+      inset: 0;
       width: 100%;
-      height: 55vh;
-      min-height: 350px;
-      flex-shrink: 0;
+      height: 100%;
     }
 
     .hero-bg img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 25%;
+      object-position: center 20%;
     }
 
     .hero-bg::after {
       background:
         linear-gradient(180deg,
-          transparent 40%,
-          rgba(8,8,8,0.7) 75%,
-          rgba(8,8,8,1) 100%
+          transparent 30%,
+          rgba(8,8,8,0.4) 50%,
+          rgba(8,8,8,0.85) 70%,
+          rgba(8,8,8,1) 88%
         );
     }
 
-    .hero-text-left,
-    .hero-text-right {
-      position: relative;
-      left: auto; right: auto; top: auto; bottom: auto;
-      max-width: none;
-      padding: 0 24px;
-      text-align: center;
-      transform: translateY(16px);
-    }
-
+    /* Left text: positioned at bottom of screen, over gradient */
     .hero-text-left {
-      margin-top: -60px;
+      position: absolute;
+      left: 0; right: 0; top: auto;
+      bottom: 80px;
+      max-width: none;
+      padding: 0 28px;
+      text-align: center;
+      transform: translateY(20px);
+    }
+
+    .hero-text-left.vis { transform: translateY(0); }
+    .hero-text-left .ey { justify-content: center; }
+    .hero-h { font-size: 36px; letter-spacing: -1.5px; }
+    .hero-p { font-size: 14px; max-width: 320px; margin: 0 auto; }
+
+    /* Right text: hidden on mobile, button moved to left block via JS */
+    .hero-text-right { display: none; }
+
+    /* Mobile CTA button in hero */
+    .hero-mobile-btn {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      bottom: 24px;
+      left: 0; right: 0;
       z-index: 10;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
     }
 
-    .hero-text-left.vis,
-    .hero-text-right.vis { transform: translateY(0); }
+    .hero-mobile-btn.vis { opacity: 1; transform: translateY(0); }
 
-    .hero-text-left .ey,
-    .hero-text-right .ey { justify-content: center; }
-
-    .hero-text-right {
-      padding-bottom: 40px;
-    }
-
-    .hero-text-right .hero-p { margin: 0 auto; }
-
-    .hero-h { font-size: 32px; letter-spacing: -1.5px; }
-    .hero-p { font-size: 14px; max-width: none; }
     .scroll-hint { display: none; }
 
     .stats-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -422,6 +431,14 @@
       <span>Результат.</span>
     </h2>
     <p class="hero-p">Гайд и система для тех, кто запускает продукты сам.</p>
+    <a href="https://t.me/Ship_in_30_bot" class="btn">
+      Получить гайд
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+
+  <!-- Mobile-only CTA button -->
+  <div class="hero-mobile-btn" id="mBtn">
     <a href="https://t.me/Ship_in_30_bot" class="btn">
       Получить гайд
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -531,11 +548,12 @@
   const img = document.getElementById('heroImg');
   const tL = document.getElementById('tL');
   const tR = document.getElementById('tR');
+  const mBtn = document.getElementById('mBtn');
 
   function revealHero() {
     img.classList.add('loaded');
     setTimeout(() => tL.classList.add('vis'), 800);
-    setTimeout(() => tR.classList.add('vis'), 1200);
+    setTimeout(() => { tR.classList.add('vis'); if(mBtn) mBtn.classList.add('vis'); }, 1200);
   }
 
   if (img.complete && img.naturalHeight > 0) revealHero();
