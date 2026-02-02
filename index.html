@@ -323,44 +323,44 @@
   }
 
   @media (max-width: 768px) {
-    /* Hero: full-screen photo with text overlay at bottom */
+    /* Hero: photo top + text bottom, no crazy zoom */
     .hero {
       height: 100vh;
       height: 100dvh;
-      min-height: 600px;
+      min-height: 580px;
       position: relative;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .hero-bg {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; right: 0;
+      height: 62%;
     }
 
     .hero-bg img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 30%;
+      object-position: center 25%;
     }
 
     .hero-bg::after {
       background:
         linear-gradient(180deg,
-          transparent 35%,
-          rgba(8,8,8,0.5) 55%,
-          rgba(8,8,8,0.9) 72%,
-          rgba(8,8,8,1) 85%
+          transparent 50%,
+          rgba(8,8,8,0.6) 75%,
+          rgba(8,8,8,1) 100%
         );
     }
 
-    /* Left text: positioned at bottom of screen, over gradient */
+    /* Left text: at bottom of hero */
     .hero-text-left {
       position: absolute;
       left: 0; right: 0; top: auto;
-      bottom: 70px;
+      bottom: 72px;
       max-width: none;
       padding: 0 28px;
       text-align: center;
@@ -368,19 +368,19 @@
     }
 
     .hero-text-left.vis { transform: translateY(0); }
-    .hero-text-left .ey { justify-content: center; }
-    .hero-h { font-size: 36px; letter-spacing: -1.5px; }
-    .hero-p { font-size: 14px; max-width: 320px; margin: 0 auto; }
+    .hero-text-left .ey { justify-content: center; font-size: 9px; margin-bottom: 12px; }
+    .hero-h { font-size: 34px; letter-spacing: -1.5px; margin-bottom: 12px; }
+    .hero-p { font-size: 13px; max-width: 300px; margin: 0 auto; }
 
-    /* Right text: hidden on mobile, button moved to left block via JS */
+    /* Right text: hidden on mobile */
     .hero-text-right { display: none; }
 
-    /* Mobile CTA button in hero */
+    /* Mobile CTA button */
     .hero-mobile-btn {
       display: flex;
       justify-content: center;
       position: absolute;
-      bottom: 24px;
+      bottom: 20px;
       left: 0; right: 0;
       z-index: 10;
       opacity: 0;
